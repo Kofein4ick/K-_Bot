@@ -1,0 +1,11 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h1>Добро пожаловать в чат-бот</h1>
+        <a href="{% url 'bot' %}"><button class="btn btn-warning">Написать боту</button></a>
+    </div>
+
+{% endblock %}
