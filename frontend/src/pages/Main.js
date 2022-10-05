@@ -4,23 +4,7 @@ import { CHAT_ROUTE, MAIN_ROUTE } from '../utils/consts';
 import {Link } from 'react-router-dom';
 
 const Main = () =>{
-const [buts, setBut] = useState([1, 2, 3, 4, 5])
-const [messages,setMessage] = useState([])
 
-async function sendMessage(index){
-  setMessage([...messages,index])
-}
-
-//const result = buts.map((but,index)=>{
-//return <Button key={index} onClick={()=>sendMessage(index)} style={{marginTop:10,marginLeft:5}} variant={"contained"}>Zdarova {but}</Button>
-//})
-//const result2 = messages.map((message)=>{
- // return <div>{message}</div>
-//})
-//var objDiv = document.getElementById("div1");
-//function prok(){
-//if(objDiv!=null){
-  //objDiv.scrollTop = objDiv.scrollHeight}}
   return (
         <Container className="d-flex justify-content-center align-items-center"
         style={{height:window.innerHeight-54}}>

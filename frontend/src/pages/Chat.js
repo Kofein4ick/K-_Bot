@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Button,Container,Col} from 'react-bootstrap';
+import { fetchAnswer, fetchQuest } from '../components/Api';
 
 const Chat = () =>{
 const [buts, setBut] = useState([1, 2, 3, 4, 5])
 const [messages,setMessage] = useState([])
+const[answ,setAnsw]= useState([])
 
-function sendMessage(index){
-  let message={type:'', text:''}
-  message.type = (index%2) === 0 ? 'bot' : 'user'
-  message.text = 'Была нажата кнопка: ' + (index+1)
+
+useEffect(()=>{fetchAnswer(1).then(data=>setAnsw(data.post))
+  fetchQuest(1).then(data=>printMessage(data.post))
+}, [])
+
+
+function printMessage(data){
+  console.log(data)
+  let message={type:'bot', text:data.text}
   setMessage([...messages, message])
 }
 
-const result = buts.map((but,index)=>{
-return <Button key={index} onClick={()=>sendMessage(index)} style={{marginTop:10,marginLeft:5}}>{but}</Button>
+function pasteAnsw(){
+  let temp=[]
+  answ.map((ans,index)=>{
+  temp=[...temp,{type:'bot',text:ans.text}]})
+}
+const result = answ.map((ans,index)=>{
+return <Button key={ans.id} style={{marginTop:10,marginLeft:5}}>{index+1}
+</Button>
 })
+
 const result2 = messages.map((message)=>{
-  return <div style={{margin:10, marginLeft:message.type ==='bot' ? 'auto'  : 10,
+  return <div style={{margin:10, marginLeft:message.type ==='bot' ? 10 : 'auto' ,
   width:'fit-content'}}>
             {message.text}
         </div>
@@ -33,14 +47,14 @@ if(objDiv!=null){
         </Col>
         <Col xs="auto" md="auto" lg="auto">
           <Container>
-              <Col>
                 <div id="div1" style={{width:'120vh',height:window.innerHeight-70,
                 border:'1px solid #3ab2d6', overflow:'auto'}}>
                   {result2}
+                  {pasteAnsw()}
                   {prok()}
                 </div>
-                <div alignItems={"flex-start"}>{result}</div>
-              </Col>
+                <div >{result}</div>
+
           </Container>
         </Col>
         <Col xs="auto" md="auto" lg="auto">
