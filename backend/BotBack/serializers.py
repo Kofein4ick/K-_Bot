@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from django.db import models
 from .models import Answers, Questions
 
 class QuestionsSerializer(serializers.ModelSerializer):
@@ -10,4 +10,4 @@ class QuestionsSerializer(serializers.ModelSerializer):
 class AnswersSerializer(serializers.ModelSerializer):
      class Meta:
         model = Answers
-        fields = '__all__'
+        fields = ('id','text')
