@@ -9,10 +9,10 @@ class Questions(models.Model):
         db_table = 'questions'
 
 class Answers(models.Model):
-    question_id = models.IntegerField()
-    answer = models.CharField('Вопрос', max_length=250)
-    note = models.TextField()
-    next_question = models.IntegerField()
+    question = models.ForeignKey(Questions, on_delete=models.CASCADE, null=True)
+    answer = models.CharField('Ответ', max_length=250)
+    note = models.TextField(null=True)
+    next_question = models.IntegerField(null = True)
 
 
     class Meta:
