@@ -13,6 +13,7 @@ class Answers(models.Model):
     answer = models.CharField('Ответ', max_length=250)
     note = models.TextField(null=True)
     next_question = models.IntegerField(null = True)
+    answer_final = models.CharField('Итоговый ответ', max_length=250, null=True)
 
 
     class Meta:

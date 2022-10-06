@@ -11,7 +11,6 @@ def next_quest_num(id):
     for i in answer:
         if i.id == id:
             return i.next_question
-            pass
 
 #функция, которая возвращает строку таблицы Questions с нужным вопросом. На входе id следующего вопроса из Answers
 def next_quest(id):
@@ -34,15 +33,12 @@ def bot_page(request):
 
 
 class QueViewSet(ModelViewSet):
-    answ_id = 5   #id ответа
+    answ_id = 4   #id ответа
     quest = now_question(answ_id)    #строка с вопросом из таблицы Questions
     if quest is None:
         queryset = Answers.objects.filter(id = answ_id)
         serializer_class = AnsSerializer
-    elif (quest is not None) and len(Answers.objects.filter(id = answ_id, note = None)) != 0:
-        queryset = Questions.objects.filter(id = quest.id)
-        serializer_class = QueSerializer
     else:
-        queryset = Questions.objects.filter(id = quest.id)
+        queryset = Answers.objects.filter(question_id=quest.id)
         serializer_class = AnsQueSerializer
 

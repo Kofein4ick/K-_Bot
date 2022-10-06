@@ -11,9 +11,11 @@ class QueSerializer(ModelSerializer):
 class AnsSerializer(ModelSerializer):
     class Meta:
         model = Answers
-        fields = ['note']
+        fields = ['answer_final']
 
 class AnsQueSerializer(ModelSerializer):
+    question = QueSerializer(read_only=True)
+
     class Meta:
         model = Answers
-        fields = ['note', 'question']
+        fields = ['answer', 'note', 'question']
