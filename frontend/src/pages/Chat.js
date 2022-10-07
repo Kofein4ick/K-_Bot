@@ -11,7 +11,7 @@ const [messages,setMessage] = useState([])
 const [answers,setAnswers] = useState([])
 const [visible,setVisible]=useState(false)
 
-useEffect(()=>{fetchs(1,'')},[])
+useEffect(()=>{fetchs(1,null)},[])
 
 function fetchs(q_id, message){
 if(q_id!==null){
@@ -27,6 +27,7 @@ else{
 
 function printMess(data,message,q_id){
   let temp3=[]
+  
   if(data!==null){
   let temp2=data.post.answers.map((answer,index)=>{  
     let ans={type:'bot',text:'Ответ '+(index+1)+': '+answer.text,
@@ -38,15 +39,18 @@ function printMess(data,message,q_id){
   secondText:''})
   if(q_id===1){temp2.push(first_message)}
   temp3=temp2}
-  if(message!==''){
-    let ans={type:'',text:message.text,
+
+  if(message!==null){
+    if(message.FinalAnswer!=='')
+    {let ans={type:'bot',text:message.FinalAnswer,
     secondText:''}
     temp3.push(ans)}
+
+    let ans={type:'',text:message.text,
+    secondText:''}
+    temp3.push(ans)
+  }
   temp3=temp3.reverse()
-  if(message.FinalAnswer!=='')
-  {let ans={type:'bot',text:message.FinalAnswer,
-  secondText:''}
-  temp3.push(ans)}
   setMessage([...messages,...temp3])
 }
 
@@ -64,11 +68,15 @@ const answ_buttons = (answers.length!==0) ? answers.map((ans,index)=>{
   }) : <div>pusto</div>
 const buttons = visible===false ? answ_buttons : final_button
 
+function toastMess(message){
+  toast.info(message, {position: toast.POSITION.TOP_CENTER})
+}
+
 const result2 = messages.length === 0 ? <div>Pusto</div> : messages.map((message,index)=>{
 const cnopcka = ((message.type ==='bot')&&(message.secondText!=='')) 
-? <div><Button className="d-flex align-items-center" size="sm"
-onClick={()=>{toast.info(message.secondText, {
-  position: toast.POSITION.TOP_CENTER})}}>i</Button> <ToastContainer /></div> : null
+? <Button key={index} className="d-flex align-items-center" size="sm"
+onClick={()=>{toastMess(message.secondText)}}>i
+</Button> : null
 
 return <Grid  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
             <div style={{marginTop:10, marginLeft:message.type ==='bot' ? 5 : 'auto' ,
@@ -78,6 +86,7 @@ return <Grid  container direction={"string"} alignItems={"flex-start"} className
             </div>
             <div style={{marginTop:10,marginLeft:5}} className="d-flex align-items-center">
               {cnopcka}
+
             </div>
         </Grid>
 })
@@ -99,7 +108,9 @@ return <Grid  container direction={"string"} alignItems={"flex-start"} className
         <div xs='auto' md='auto' lg='auto'>
           Дополнительная<br/> информация
         </div>
+        <ToastContainer />
     </Container>
+    
   );
 };
 
