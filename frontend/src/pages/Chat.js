@@ -1,72 +1,104 @@
 import React, { useEffect, useState } from 'react';
-import {Button,Container,Col} from 'react-bootstrap';
+import {Button,Container} from 'react-bootstrap';
 import { fetchAnswer} from '../components/Api';
-import {Grid} from '@mui/material';
+import { Grid} from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { MAIN_ROUTE,first_message } from '../utils/consts';
 
 const Chat = () =>{
 const [messages,setMessage] = useState([])
-const [question,setQuestion] = useState([])
 const [answers,setAnswers] = useState([])
+const [visible,setVisible]=useState(false)
 
-useEffect(()=>{fetchs(1)},[])
-function fetchs(q_id){
+useEffect(()=>{fetchs(1,'')},[])
+
+function fetchs(q_id, message){
+if(q_id!==null){
 fetchAnswer(q_id).then(data=>{
-  setQuestion(data.post.quest);
   setAnswers(data.post.answers);
+  printMess(data,message,q_id)
+})}
+else{
+  setVisible(true)
+  printMess(null,message,q_id)}
+  
+}
+
+function printMess(data,message,q_id){
+  let temp3=[]
+  if(data!==null){
   let temp2=data.post.answers.map((answer,index)=>{  
-    let ans={id:data.post.answers.id, type:'bot',text:'Ответ '+(index+1)+': '+answer.text}
+    let ans={type:'bot',text:'Ответ '+(index+1)+': '+answer.text,
+    secondText:answer.SecondText}
     return ans
   })
   temp2=temp2.reverse()
-  temp2.push({type:'bot',text:data.post.quest.text})
-  const temp3=temp2.reverse()
-  setMessage(temp3)
-})
+  temp2.push({type:'bot',text:data.post.quest.text,
+  secondText:''})
+  if(q_id===1){temp2.push(first_message)}
+  temp3=temp2}
+  if(message!==''){
+    let ans={type:'',text:message.text,
+    secondText:''}
+    temp3.push(ans)}
+  temp3=temp3.reverse()
+  if(message.FinalAnswer!=='')
+  {let ans={type:'bot',text:message.FinalAnswer,
+  secondText:''}
+  temp3.push(ans)}
+  setMessage([...messages,...temp3])
 }
-let objDiv = document.getElementById("div1");
+
+const objDiv = document.getElementById("div1");
 function prok(){
 if(objDiv!==null){ 
   objDiv.scrollTop = objDiv.scrollHeight
  }}  
-prok()
-
-const result = answers.length!==0 ? answers.map((ans,index)=>{ 
+const final_button=<Button href={MAIN_ROUTE}>Конец</Button>
+const answ_buttons = (answers.length!==0) ? answers.map((ans,index)=>{ 
   return <Button key={ans.id} onClick={()=>{
-  let f_ans=answers.find(el=>el.id===ans.id)
-  setMessage([...messages,f_ans])
+  fetchs(ans.Next_Quest,ans)
   }} 
   style={{marginTop:10,marginLeft:5}}>{index+1}</Button>
   }) : <div>pusto</div>
+const buttons = visible===false ? answ_buttons : final_button
+
 const result2 = messages.length === 0 ? <div>Pusto</div> : messages.map((message,index)=>{
-const cnopcka= message.type ==='bot' ? <Button className="d-flex align-items-center" size="sm">i</Button> : null
+const cnopcka = ((message.type ==='bot')&&(message.secondText!=='')) 
+? <div><Button className="d-flex align-items-center" size="sm"
+onClick={()=>{toast.info(message.secondText, {
+  position: toast.POSITION.TOP_CENTER})}}>i</Button> <ToastContainer /></div> : null
+
 return <Grid  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
-            <div key={index} style={{marginTop:10, marginLeft:message.type ==='bot' ? 5 : 'auto' ,
-            width:'fit-content',border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab'}}>
+            <div style={{marginTop:10, marginLeft:message.type ==='bot' ? 5 : 'auto' ,
+            width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab'}}>
                 {message.text}
+                {prok()}
             </div>
             <div style={{marginTop:10,marginLeft:5}} className="d-flex align-items-center">
-                {cnopcka}
+              {cnopcka}
             </div>
         </Grid>
 })
   return (
     <Container className="d-flex justify-content-center align-items-center"
     fluid>
-        <Col xs='auto' md='auto' lg='auto'>
+        <div xs='auto' md='auto' lg='auto'>
            Здесь будет Семен
-        </Col>
-        <Col xs='auto' md='auto' lg='auto'>
+        </div>
+        <div xs='auto' md='auto' lg='auto'>
             <div id="div1" style={{width:'120vh',height:window.innerHeight-70,
               border:'1px solid #3ab2d6', overflow:'auto'}}>
               {result2}
             </div>
             <div >
-              {result}
+              {buttons}
             </div>
-        </Col>
-        <Col xs='auto' md='auto' lg='auto'>
-          Ссылки
-        </Col>
+        </div>
+        <div xs='auto' md='auto' lg='auto'>
+          Дополнительная<br/> информация
+        </div>
     </Container>
   );
 };
