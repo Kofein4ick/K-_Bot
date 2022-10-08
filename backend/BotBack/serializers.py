@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.db import models
 from .models import Answers, Questions
 
+# Сериалайзеры готовые, для работы с моделями
 class QuestionsSerializer(serializers.ModelSerializer):
      class Meta:
         model = Questions

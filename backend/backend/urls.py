@@ -16,10 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from BotBack.views import AnswerApi, QuestionApi
+from BotBack.views import AnswerApi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/Answer/',AnswerApi.as_view()),
-    path('api/Question/',QuestionApi.as_view()),
+    path('api/Answer/',AnswerApi.as_view()),# Путь для запроса
 ]

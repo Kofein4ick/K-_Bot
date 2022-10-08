@@ -7,6 +7,8 @@ import { CHAT_ROUTE, MAIN_ROUTE } from '../utils/consts';
 
 
 const AppRouter = () =>{
+  //Маршрутизация
+  //При любом непредусмотренном пути, отправляет на главную страницу
   return (<Routes>
         <Route path={MAIN_ROUTE} element={<Main/>}/>
         <Route path={CHAT_ROUTE} element={<Chat/>}/>

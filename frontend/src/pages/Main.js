@@ -4,7 +4,7 @@ import { CHAT_ROUTE, MAIN_ROUTE } from '../utils/consts';
 import {Link } from 'react-router-dom';
 
 const Main = () =>{
-
+//Главный экран, пока с 4 кнопками
   return (
         <Container className="d-flex justify-content-center align-items-center"
         style={{height:window.innerHeight-54}}>
