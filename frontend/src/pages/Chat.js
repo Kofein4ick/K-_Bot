@@ -8,7 +8,6 @@ import { MAIN_ROUTE,first_message,last_message } from '../utils/consts';
 
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
-const [visible,setVisible]=useState(false)//стейт отображения кнопок
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
@@ -29,7 +28,6 @@ fetchAnswer(q_id).then(data=>{//получение вопроса и ответ�
   printMess(data,message,q_id)//вывод
 })}
 else{
-  setVisible(true)//если конечная ветка, то выводим финальный  ответ
   printMess(null,message,q_id)
 }
   
@@ -121,12 +119,16 @@ return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"strin
     fluid>
         <div xs='auto' md='auto' lg='auto'>
             <div id="div1" style={{width:'140vh',height:window.innerHeight,
-              border:'1px solid #3ab2d6', overflow:'auto'}}>
+              border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
               {outMessage}
             </div>
         </div>
-        <div xs='auto' md='auto' lg='auto'>
-          Дополнительная<br/> информация
+        <div style={{marginLeft:20}} xs='auto' md='auto' lg='auto'>
+          <b>Смотрите также:</b><br/>
+          <li><a href=''>Документы для самозанятых</a></li>
+          <li><a href=''>Налогообложение и социальные гарантии</a></li>
+          <li><a href=''>Как стать самозанятым и как перестать им быть?</a></li>
+          <li><a href=''>За что самозанятые могут получить штрафы?</a></li>
         </div>
         <ToastContainer />
     </Container>
