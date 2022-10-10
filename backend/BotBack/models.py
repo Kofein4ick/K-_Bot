@@ -10,6 +10,8 @@ class Answers(models.Model):
     Q_id=models.ForeignKey(Questions,on_delete = models.CASCADE)# Внешний ключ на таблицу вопросов
     Next_Quest=models.PositiveIntegerField(null=True,blank=True)# Номер следующего вопроса
     FinalAnswer=models.TextField(blank=True)                    # Текст финального ответа
+    Link=models.TextField(blank=True) 
     SecondText=models.TextField(blank=True)                     # Текст примечания к варианту ответа(примечания к 
                                                                 # итоговым ответам выводятся в них же)
+
 
