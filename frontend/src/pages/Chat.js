@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Button,Container} from 'react-bootstrap';
+import {Button,Container,Alert} from 'react-bootstrap';
 import { fetchAnswer} from '../components/Api';
 import { Grid} from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { first_message,last_message,themes,test_first_message } from '../utils/c
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
+const [show, setShow] = useState([false,false,false]);
 
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
   if(flag===false)
@@ -56,12 +57,15 @@ else{
   
 }
 //Рамзетка текста
-const getFormatedText = (text) => {
+const getFormatedText = (text,message) => {
   if (text.includes('\n')){
-    return text.split('\n').map((str, i) => <p key={`p_${i}`}>{str}</p>)
+    return text.split('\n').map((str, i) => {
+      str=getHyperLink(str,message)
+      
+      return <p key={`p_${i}`}>{str}</p>})
   }
   else {
-    return text
+    return text=getHyperLink(text,message)
   }
 }
 //Вставка гиперссылок
@@ -72,7 +76,8 @@ const getHyperLink = (text,message) => {
       links=message.Link.split('\n')}
     else {links=message.Link}
     return text.split('LINK').map((str, i) =>{
-    if(i%2!==0){return <a href={Array.isArray(links) ? links[i/2] : links} key={`p_${i}`}>{str}</a>}
+    if(i%2!==0){
+      return <a href={Array.isArray(links) ? links[Math.trunc(i/2)] : links} key={`p_${i}`}>{str}</a>}
     else{return str}})
   }
   else {
@@ -126,23 +131,46 @@ function printMess(data,message,q_id){
 
 }
 
+function AlertDismissibleExample(message,index) {
+  if (show[index]) {
+    return (
+      <Alert style={{width:'100vh',marginLeft:5,marginTop:5}} variant="primary" onClose={() => {
+        let temp = Object.assign([],show)
+        temp[index]=false
+        setShow(temp)}} dismissible>
+        {getFormatedText(message.SecondText,message)}
+      </Alert>
+    );
+  }
+  return <Button key={index} style={{height:25}} className="d-flex align-items-center" size="sm" 
+    onClick={() => {
+      let temp = Object.assign([],show)
+      temp[index]=true
+      setShow(temp)}}>
+    i</Button>;
+}
 
 
 //Функция вывода всплывающих сообщений(примечаний)
 function toastMess(message){
   toast.info(message, {position: toast.POSITION.TOP_CENTER})
 }
+let i=-1
 //Вывод сообщений
 const outMessage =  messages.map((message,index)=>{
+if ((message.type ==='bot')&&(message.SecondText!=='')) {i++}
 const cnopcka = ((message.type ==='bot')&&(message.SecondText!=='')) 
-? <Button style={{height:25}} key={index} className="d-flex align-items-center" size="sm"
-onClick={()=>{toastMess(message.SecondText)}}>i
-</Button> : null
+? AlertDismissibleExample(message,i)
+ /*<Button style={{height:25}} key={index} className="d-flex align-items-center" size="sm"
+onClick={()=>{
+  
+  toastMess(message.SecondText)}}>i
+</Button>*/ : null
 
 return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
             <div onClick={(message.typeMess==='last')||(message.typeMess==='final') ? null : ()=>{fetchs(message.Next_Quest,message)}}  style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
             width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab'}}>
-                {getFormatedText(getHyperLink(message.text,message))}
+                {getFormatedText(message.text,message)}
             </div>
             <div style={{marginLeft:5}} className="d-flex align-items-center">
               {cnopcka}
