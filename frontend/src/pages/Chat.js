@@ -4,7 +4,7 @@ import {Button,Container,Popover,OverlayTrigger,Accordion } from 'react-bootstra
 import { fetchAnswer, fetchFAQ_Q_A, fetchItems} from '../components/Api';
 import { Grid} from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
-import { first_message,docs_type,themes,test_first_message, docs_first, FAQ_PRIV_ROUTE } from '../utils/consts';
+import { first_message,docs_type,themes,test_first_message, docs_first, FAQ_PRIV_ROUTE,FAQ_RESP_ROUTE,FAQ_REG_ROUTE } from '../utils/consts';
 
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
@@ -55,13 +55,12 @@ if(q_id!==null){
         printMess(data,message,q_id)})//вывод
         break
       case -2:
-
         break
       case -3:
 
         break
       case -4:
-        return <Navigate to={'/faq_priv'}/>
+        break
       case -5:
         if(q_id<0){printMess(null,message,q_id)}
         else{
@@ -215,8 +214,8 @@ backgroundColor:'#fff', color:'#000', borderRadius:10}}>
     <div style={{marginLeft:8,marginRight:8,marginTop:2,marginBottom:2}}>{getFormatedText(message.text,message)}</div>
 </div>
 :
-<Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? null :
-(message.mode===-3 ? null : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
+<Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? FAQ_REG_ROUTE :
+(message.mode===-3 ? FAQ_RESP_ROUTE : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
 style={{ marginLeft: 5, borderRadius:10,width:'fit-content',maxWidth:'60vh', 
 border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',}}>
     {getFormatedText(message.text,message)}

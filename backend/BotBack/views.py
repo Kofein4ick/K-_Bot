@@ -6,8 +6,8 @@ from django.http import FileResponse
 
 from .const import PATH_TO_DOCS
 
-from .models import Answers, Items, Questions, FAQ_Types, FAQ_Q_A,FAQ_Priv_Q_A,FAQ_Priv_Types
-from .serializers import QuestionsSerializer,AnswersSerializer,ItemsSerializer,FAQ_TypesSerializer,FAQ_Q_ASerializer
+from .models import Answers, Items, Questions, FAQ_Types, FAQ_Q_A,FAQ_Priv_Q_A,FAQ_Resp_Q_A,FAQ_Reg_Q_A
+from .serializers import QuestionsSerializer,AnswersSerializer,ItemsSerializer,FAQ_TypesSerializer,FAQ_Q_ASerializer,FAQ_Resp_Q_ASerializer
 
 # API для запроса, получаем по моделям данные
 class AnswerApi(APIView):
@@ -26,6 +26,16 @@ class FAQ_Priv_Q_AApi(APIView):
     def get(self,request):
         q_a=FAQ_Priv_Q_A.objects.all()
         return Response({'post':{'q_a':FAQ_Q_ASerializer(q_a, many=True).data}})
+
+class FAQ_Resp_Q_AApi(APIView):
+    def get(self,request):
+        q_a=FAQ_Resp_Q_A.objects.all()
+        return Response({'post':{'q_a':FAQ_Resp_Q_ASerializer(q_a, many=True).data}})
+
+class FAQ_Reg_Q_AApi(APIView):
+    def get(self,request):
+        q_a=FAQ_Reg_Q_A.objects.all()
+        return Response({'post':{'q_a':FAQ_Resp_Q_ASerializer(q_a, many=True).data}})
 
 class TypeApi(APIView):
     def post(self,request):

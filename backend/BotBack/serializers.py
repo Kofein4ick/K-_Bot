@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db import models
-from .models import  Answers, FAQ_Types, FAQ_Q_A,Items, Questions, Types
+from .models import  Answers, FAQ_Types, FAQ_Q_A,Items, Questions, Types,FAQ_Resp_Q_A
 
 # Сериалайзеры готовые, для работы с моделями
 class QuestionsSerializer(serializers.ModelSerializer):
@@ -31,4 +31,9 @@ class FAQ_TypesSerializer(serializers.ModelSerializer):
 class FAQ_Q_ASerializer(serializers.ModelSerializer):
      class Meta:
         model = FAQ_Q_A
+        fields = '__all__'
+
+class FAQ_Resp_Q_ASerializer(serializers.ModelSerializer):
+     class Meta:
+        model = FAQ_Resp_Q_A
         fields = '__all__'
