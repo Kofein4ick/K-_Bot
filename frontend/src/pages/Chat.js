@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate} from 'react-router-dom';
 import {Button,Container,Popover,OverlayTrigger,Accordion } from 'react-bootstrap';
 import { fetchAnswer, fetchFAQ_Q_A, fetchItems} from '../components/Api';
 import { Grid} from '@mui/material';

@@ -18,7 +18,7 @@ SecondText:'',Link:'',Next_Quest:null,mode:(0),FinalAnswer:'',typeMess:'final'}
 export const themes=[
     {type:'bot',text:'Могу ли я стать самозанятым?',SecondText:'',Link:'',Next_Quest:(1),mode:(-1),FinalAnswer:''},
     {type:'bot',text:'Как стать самозанятым и как перестать им быть?',SecondText:'',Link:'',Next_Quest:(0),mode:(-2),FinalAnswer:''},
-    {type:'bot',text:'За что самозанятые могут получить штрафы?',SecondText:'',Link:'',Next_Quest:null,mode:(-3),FinalAnswer:''},
+    {type:'bot',text:'Ответственность.',SecondText:'',Link:'',Next_Quest:(0),mode:(-3),FinalAnswer:''},
     {type:'bot',text:'Социальные гарантии, льготы, пенсии.',SecondText:'',Link:'',Next_Quest:(0),mode:(-4),FinalAnswer:''},
     {type:'bot',text:'Документы для самозанятых.',SecondText:'',Link:'',Next_Quest:(-1),mode:(-5),FinalAnswer:''},
 ]
