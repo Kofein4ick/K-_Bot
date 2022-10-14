@@ -83,16 +83,16 @@ else{
 const getFormatedText = (text,message) => {
   if (text.includes('\n')){
     return text.split('\n').map((str, i) => {
-      str=getHyperLink(str,message)
+      str=getHyperLink(str)
       return <p key={`p_${i}`}>{str}</p>})
   }
   else {
-    return text=getHyperLink(text,message)
+    return text=getHyperLink(text)
   }
 }
 
 //Вставка гиперссылок
-const getHyperLink = (text,message) => {  
+const getHyperLink = (text) => {  
   if (text.includes('LINK')){
     let links
     return text.split('LINK').map((str, i) =>{

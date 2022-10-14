@@ -23,10 +23,9 @@ class FAQ_Q_AApi(APIView):
         return Response({'post':{'type':FAQ_TypesSerializer(type).data,'q_a':FAQ_Q_ASerializer(q_a, many=True).data}})
 
 class FAQ_Priv_Q_AApi(APIView):
-    def post(self,request):
-        type=FAQ_Priv_Types.objects.get(pk=request.data['T_id'])
-        q_a=FAQ_Priv_Q_A.objects.all().filter(T_id=request.data['T_id'])
-        return Response({'post':{'type':FAQ_TypesSerializer(type).data,'q_a':FAQ_Q_ASerializer(q_a, many=True).data}})
+    def get(self,request):
+        q_a=FAQ_Priv_Q_A.objects.all()
+        return Response({'post':{'q_a':FAQ_Q_ASerializer(q_a, many=True).data}})
 
 class TypeApi(APIView):
     def post(self,request):

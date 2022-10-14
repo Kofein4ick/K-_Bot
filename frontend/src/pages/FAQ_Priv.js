@@ -1,35 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import {Button,Container,Accordion } from 'react-bootstrap';
-import {fetchFAQ_Q_A} from '../components/Api';
+import {fetchFAQ_Priv_Q_A} from '../components/Api';
 import 'react-toastify/dist/ReactToastify.css';
 import { CHAT_ROUTE } from '../utils/consts';
 
 const FAQ_Priv = () =>{
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
+const [visibleB,setVisibleB]=useState(false)
 
 document.body.style = 'background: #8ad4ff'
-
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
   if(flag===false)
     {
       let FAQ1=[]
-      fetchFAQ_Q_A(1).then(data=>{
-        FAQ1.push(faq(data))
-        fetchFAQ_Q_A(2).then(data=>{
-          FAQ1.push(faq(data))
-          fetchFAQ_Q_A(3).then(data=>{
-            FAQ1.push(faq(data))
-            })
-          })
-        })
+      fetchFAQ_Priv_Q_A().then(data=>{
+        FAQ1.push(faq(data,1))
+        FAQ1.push(faq(data,2))
+        FAQ1.push(faq(data,3))
+        FAQ1.push(faq(data,4))
+        FAQ1.push(faq(data,5))
+        setTromp(FAQ1)
+      })
       setFlag(true)
+      setVisibleB(true)
     }
+    console.log(tromp.length)
   })
 
-function faq(data){
-let el = data.post.q_a.map((element,index)=>{
-    return <Accordion.Item eventKey={`${element.T_id*element.id*10}`}>
+
+function faq(data,id){
+let el = data.post.q_a.map((element,index)=>{index%2 ? setVisibleB(true) : setVisibleB(false)
+  if(element.T_id===id)
+    return <Accordion.Item  key={`${element.T_id*element.id*10}`} eventKey={`${element.T_id*element.id*10}`}>
        <Accordion.Header style={{textAlign:'justify'}}>{element.Qtext}</Accordion.Header>
        <Accordion.Body style={{textAlign:'justify'}}>{getFormatedText(element.Atext,element)}</Accordion.Body>
     </Accordion.Item>
@@ -41,36 +44,30 @@ let el = data.post.q_a.map((element,index)=>{
 const getFormatedText = (text,message) => {
   if (text.includes('\n')){
     return text.split('\n').map((str, i) => {
-      str=getHyperLink(str,message)
-      
+      str=getHyperLink(str)
       return <p key={`p_${i}`}>{str}</p>})
   }
   else {
-    return text=getHyperLink(text,message)
+    return text=getHyperLink(text)
   }
 }
 
 //Вставка гиперссылок
-const getHyperLink = (text,message) => {  
+const getHyperLink = (text) => {  
   if (text.includes('LINK')){
-    let links=''
-    if(message.Link.includes('\n')){
-      links=message.Link.split('\n')}
-    else {links=message.Link}
+    let links
     return text.split('LINK').map((str, i) =>{
-    if(i%2!==0){
-      return <a href={Array.isArray(links) ? links[Math.trunc(i/2)] : links} key={`p_${i}`}>{str}</a>}
+    if(i%2!==0){str=str.split('SOURCE')
+    links=str[1]
+    str[1]=''
+      return <a href={links} key={`p_${i}`}>{str}</a>}
     else{return str}})
   }
   else {
-    let temp=[]
-    if(message.typeMess==='last'){
-      temp.push(<a href={message.Link}>{text}</a>)
-      return temp}
-    else {return text}
+    return text
   }
 }
-
+const button = <Button style={{marginTop:20}} href={CHAT_ROUTE}>Вернуться назад</Button>
 const FAQ =
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
@@ -94,6 +91,7 @@ const FAQ =
       <Accordion.Body>{tromp[4]}</Accordion.Body>
 </Accordion.Item>
 </Accordion>
+const load= visibleB ? <div></div> : <p></p>
 //Сама страница
   return (<div style={{textAlign:'center'}} >
     <h2 style={{marginTop:20,marginBottom:20}}>Социальные гарантии, льготы, пенсии.</h2>
@@ -106,7 +104,8 @@ const FAQ =
             </div>
         </div>
     </Container>
-    <Button style={{marginTop:20}} href={CHAT_ROUTE}>Вернуться назад</Button> 
+    {button}
+    {load}
     </div>
   );
 };
