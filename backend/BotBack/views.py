@@ -1,9 +1,11 @@
-from typing import Type
-from django.shortcuts import render
+from django.views.generic import View
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.http import FileResponse
+from django.http import FileResponse,HttpResponse
+from django.conf import settings
+import os
 
+from backend.settings import BASE_DIR 
 from .const import PATH_TO_DOCS
 
 from .models import Answers, Items, Questions, FAQ_Types, FAQ_Q_A,FAQ_Priv_Q_A,FAQ_Resp_Q_A,FAQ_Reg_Q_A
@@ -44,13 +46,27 @@ class TypeApi(APIView):
 
 class MasterDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS+'Договор. Мастер-класс.docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'Договор. Мастер-класс.docx','rb'))
 
 class BuySellDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS+'Договор. Продажа вспомогательных материалов..docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'Договор. Продажа вспомогательных материалов..docx','rb'))
 
 class ImageApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS+'Логотип Стартовая страница.png','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'Логотип Стартовая страница.png','rb'))
+
+class ReactAppView(View):
+    def get(self, request):
+        try:
+            with open(BASE_DIR/'build'/'index.html') as file:
+                return HttpResponse(file.read())
+
+        except :
+            return HttpResponse(
+                """
+                index.html not found ! build your React app !!
+                """,
+                status=501,
+            )
 # Необходимо прописать json для обработки ошибок(400-ые 500-ые и т.п.) Django уже делает такие json(насколько я помню), их надо только отправлять пользователю
