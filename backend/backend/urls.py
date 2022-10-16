@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 
 from BotBack.views import AnswerApi, BuySellDocsApi, MasterDocsApi, TypeApi,FAQ_Q_AApi,FAQ_Priv_Q_AApi,FAQ_Resp_Q_AApi,FAQ_Reg_Q_AApi,ImageApi,ReactAppView
 
@@ -29,5 +29,5 @@ urlpatterns = [
     path('api/Docs/MasterDocs',MasterDocsApi.as_view()),
     path('api/Docs/BuySellDocs',BuySellDocsApi.as_view()),
     path('api/Image/Logo',ImageApi.as_view()),
-    path('',ReactAppView.as_view()),
+    re_path(r'^',ReactAppView.as_view()),
 ]

@@ -21,7 +21,6 @@ useEffect(()=>{//При загрузке странице делаем один 
       setFlag(true)
       setVisibleB(true)
     }
-    console.log(tromp.length)
   })
 
 

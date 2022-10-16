@@ -9,7 +9,6 @@ const [flag,setFlag]=useState(false)//вспомогательный стейт 
 const [tromp,setTromp]=useState([])
 const [visibleB,setVisibleB]=useState(false)
 
-const { activeEventKey } = useContext(AccordionContext);
 
 document.body.style = 'background: #8ad4ff'
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
@@ -27,7 +26,6 @@ useEffect(()=>{//При загрузке странице делаем один 
       setFlag(true)
       setVisibleB(true)
     }
-    console.log(tromp.length)
   })
 
 
