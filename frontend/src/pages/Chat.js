@@ -162,7 +162,7 @@ if((message.mode===-5)&&(q_id===-1)){
       }
 
       if(message.FinalAnswer!=='END'){
-      ans={type:'bot',typeMess:'final',text:message.FinalAnswer,
+      ans={type:'bot',typeMess:'last',text:message.FinalAnswer,
       SecondText:'',Link:message.Link,Next_Quest:null,FinalAnswer:'',mode:message.mode}
       temp3.push(ans)}
     }
@@ -176,7 +176,7 @@ if((message.mode===-5)&&(q_id===-1)){
 }
 
 const popover = (message)=>(
-  <Popover id="popover-basic">
+  <Popover style={{maxWidth:'60vh'}}>
     <Popover.Body style={{textAlign:'justify'}}>
         {getFormatedText(message.SecondText,message)}
     </Popover.Body>
@@ -209,7 +209,7 @@ const FAQ = (message.mode==='faq') ?
 const mess= ((message.typeMess==='last')||(message.typeMess==='final') || (message.type !=='bot')) ?
 <div style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
 width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',
-backgroundColor:'#fff', color:'#000', borderRadius:10}}>
+backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', borderRadius:10}}>
     <div style={{marginLeft:8,marginRight:8,marginTop:2,marginBottom:2}}>{getFormatedText(message.text,message)}</div>
 </div>
 :

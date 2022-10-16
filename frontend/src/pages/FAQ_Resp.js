@@ -29,7 +29,7 @@ function faq(data){
 let el = data.post.q_a.map((element,index)=>{index%2 ? setVisibleB(true) : setVisibleB(false)
     return <Accordion.Item  key={`${element.id}`} eventKey={`${element.id*10}`}>
        <Accordion.Header style={{textAlign:'justify'}}>{element.Qtext}</Accordion.Header>
-       <Accordion.Body style={{textAlign:'justify'}}>{getFormatedText(element.Atext,element)}</Accordion.Body>
+       <Accordion.Body style={{textAlign:'justify', backgroundColor: '#FFFFE0' }}>{getFormatedText(element.Atext,element)}</Accordion.Body>
     </Accordion.Item>
    })
   return el 

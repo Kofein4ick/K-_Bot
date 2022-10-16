@@ -49,4 +49,8 @@ class MasterDocsApi(APIView):
 class BuySellDocsApi(APIView):
     def get(self,request):
         return FileResponse(open(PATH_TO_DOCS+'Договор. Продажа вспомогательных материалов..docx','rb'))
+
+class ImageApi(APIView):
+    def get(self,request):
+        return FileResponse(open(PATH_TO_DOCS+'Логотип Стартовая страница.png','rb'))
 # Необходимо прописать json для обработки ошибок(400-ые 500-ые и т.п.) Django уже делает такие json(насколько я помню), их надо только отправлять пользователю

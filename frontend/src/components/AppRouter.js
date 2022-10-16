@@ -13,7 +13,7 @@ const AppRouter = () =>{
   //Маршрутизация
   //При любом непредусмотренном пути, отправляет на главную страницу
   return (<Routes>
-        <Route path={MAIN_ROUTE} element={<Navigate to={'/chat'}  replace />}/>
+        <Route path={MAIN_ROUTE} element={<Main/>}/>
         <Route path={CHAT_ROUTE} element={<Chat/>}/>
         <Route path={FAQ_PRIV_ROUTE} element={<FAQ_Priv/>}/>
         <Route path={FAQ_RESP_ROUTE} element={<FAQ_Resp/>}/>

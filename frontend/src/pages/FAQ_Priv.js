@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {Button,Container,Accordion } from 'react-bootstrap';
+import React, { useEffect, useState, useContext} from 'react';
+import {Button,Container,Accordion,AccordionContext } from 'react-bootstrap';
 import {fetchFAQ_Priv_Q_A} from '../components/Api';
 import 'react-toastify/dist/ReactToastify.css';
 import { CHAT_ROUTE } from '../utils/consts';
@@ -8,6 +8,8 @@ const FAQ_Priv = () =>{
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
 const [visibleB,setVisibleB]=useState(false)
+
+const { activeEventKey } = useContext(AccordionContext);
 
 document.body.style = 'background: #8ad4ff'
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
@@ -31,10 +33,10 @@ useEffect(()=>{//При загрузке странице делаем один 
 
 function faq(data,id){
 let el = data.post.q_a.map((element,index)=>{index%2 ? setVisibleB(true) : setVisibleB(false)
-  if(element.T_id===id)
-    return <Accordion.Item  key={`${element.T_id*element.id*10}`} eventKey={`${element.T_id*element.id*10}`}>
+  if(element.T_id===id) 
+    return <Accordion.Item key={`${element.T_id*element.id*10}`} eventKey={`${element.T_id*element.id*10}`}>
        <Accordion.Header style={{textAlign:'justify'}}>{element.Qtext}</Accordion.Header>
-       <Accordion.Body style={{textAlign:'justify'}}>{getFormatedText(element.Atext,element)}</Accordion.Body>
+       <Accordion.Body style={{textAlign:'justify', backgroundColor: '#FFFFE0' }}>{getFormatedText(element.Atext,element)}</Accordion.Body>
     </Accordion.Item>
    })
   return el 
@@ -72,23 +74,23 @@ const FAQ =
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Пенсионное обеспечение'}</Accordion.Header>
-      <Accordion.Body>{tromp[0]}</Accordion.Body>
+      <Accordion.Body style={{ backgroundColor: '#F5DEB3'}}>{tromp[0]}</Accordion.Body>
 </Accordion.Item>
 <Accordion.Item eventKey='2'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Налоги'}</Accordion.Header>
-      <Accordion.Body>{tromp[1]}</Accordion.Body>
+      <Accordion.Body style={{ backgroundColor: '#F5DEB3' }}>{tromp[1]}</Accordion.Body>
 </Accordion.Item>
 <Accordion.Item eventKey='3'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Пенсионерам и инвалидам'}</Accordion.Header>
-      <Accordion.Body>{tromp[2]}</Accordion.Body>
+      <Accordion.Body  style={{ backgroundColor: '#F5DEB3' }}>{tromp[2]}</Accordion.Body>
 </Accordion.Item>
 <Accordion.Item eventKey='4'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Социальные пособия'}</Accordion.Header>
-      <Accordion.Body>{tromp[3]}</Accordion.Body>
+      <Accordion.Body style={{ backgroundColor: '#F5DEB3' }}>{tromp[3]}</Accordion.Body>
 </Accordion.Item>
-<Accordion.Item eventKey='5'>
+<Accordion.Item  eventKey='5'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Декрет'}</Accordion.Header>
-      <Accordion.Body>{tromp[4]}</Accordion.Body>
+      <Accordion.Body style={{ backgroundColor: '#F5DEB3' }}>{tromp[4]}</Accordion.Body>
 </Accordion.Item>
 </Accordion>
 const load= visibleB ? <div></div> : <p></p>
