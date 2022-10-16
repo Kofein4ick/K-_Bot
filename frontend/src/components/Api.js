@@ -27,6 +27,9 @@ export const fetchFAQ_Resp_Q_A = async ()=>{
     const {data} = await $host.get('api/FAQ_Resp_Q_A/')
     return data
 }
+
+
+
 export const fetchFAQ_Reg_Q_A = async ()=>{
 
     const {data} = await $host.get('api/FAQ_Reg_Q_A/')
