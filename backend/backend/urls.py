@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-from BotBack.views import AnswerApi, BuySellDocsApi, MasterDocsApi, TypeApi,FAQ_Q_AApi,FAQ_Priv_Q_AApi,FAQ_Resp_Q_AApi,FAQ_Reg_Q_AApi,ImageApi,ReactAppView
+from BotBack.views import AnswerApi, BuySellDocsApi, MasterDocsApi, TypeApi,FAQ_Q_AApi,FAQ_Priv_Q_AApi,FAQ_Resp_Q_AApi,FAQ_Reg_Q_AApi,ProducionDopDocsApi,ImageApi,ProducionDocsApi,ReactAppView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/FAQ_Reg_Q_A/',FAQ_Reg_Q_AApi.as_view()),
     path('api/Docs/MasterDocs',MasterDocsApi.as_view()),
     path('api/Docs/BuySellDocs',BuySellDocsApi.as_view()),
+    path('api/Docs/Production',ProducionDocsApi.as_view()),
+    path('api/Docs/ProductionDop',ProducionDopDocsApi.as_view()),
     path('api/Image/Logo',ImageApi.as_view()),
     re_path(r'^',ReactAppView.as_view()),
 ]

@@ -52,6 +52,14 @@ class BuySellDocsApi(APIView):
     def get(self,request):
         return FileResponse(open(PATH_TO_DOCS/'Договор. Продажа вспомогательных материалов..docx','rb'))
 
+class ProducionDocsApi(APIView):
+    def get(self,request):
+        return FileResponse(open(PATH_TO_DOCS/'Договор на изготовление кондитерской продукции.docx','rb'))
+
+class ProducionDopDocsApi(APIView):
+    def get(self,request):
+        return FileResponse(open(PATH_TO_DOCS/'дополнение к договору на изготовление кондитерской продукции.docx','rb'))
+
 class ImageApi(APIView):
     def get(self,request):
         return FileResponse(open(PATH_TO_DOCS/'Логотип Стартовая страница.png','rb'))
