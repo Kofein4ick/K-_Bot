@@ -8,7 +8,7 @@ export const FAQ_REG_ROUTE ="/faq_reg"
 
 //Адрес сервера
 export const $host=axios.create({
-    baseURL:'http://localhost:8000/'
+    baseURL:'http://cb26492.tmweb.ru/'
 })
 //Приветсвенное сообщение
 export const first_message={type:'bot',

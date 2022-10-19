@@ -46,23 +46,23 @@ class TypeApi(APIView):
 
 class MasterDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS/'Договор. Мастер-класс.docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'DogovorMasterKlass.docx','rb'))
 
 class BuySellDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS/'Договор. Продажа вспомогательных материалов..docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'DogovorProdazha.docx','rb'))
 
 class ProducionDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS/'Договор на изготовление кондитерской продукции.docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'DogovorIzgotovlenie.docx','rb'))
 
 class ProducionDopDocsApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS/'дополнение к договору на изготовление кондитерской продукции.docx','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'DopIzgotovlenie.docx','rb'))
 
 class ImageApi(APIView):
     def get(self,request):
-        return FileResponse(open(PATH_TO_DOCS/'Логотип Стартовая страница.png','rb'))
+        return FileResponse(open(PATH_TO_DOCS/'LogoStart.png','rb'))
 
 class ReactAppView(View):
     def get(self, request):

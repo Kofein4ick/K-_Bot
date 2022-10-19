@@ -41,7 +41,7 @@ function faq(data){
 let el = data.post.q_a.map((element,index)=>{
     return <Accordion.Item eventKey={`${element.T_id*element.id*10}`}>
        <Accordion.Header style={{textAlign:'justify'}}>{element.Qtext}</Accordion.Header>
-       <Accordion.Body style={{textAlign:'justify'}}>{getFormatedText(element.Atext,element)}</Accordion.Body>
+       <Accordion.Body style={{textAlign:'justify', backgroundColor: '#FFFFE0'}}>{getFormatedText(element.Atext,element)}</Accordion.Body>
     </Accordion.Item>
    })
   return el 
@@ -194,15 +194,15 @@ const FAQ = (message.mode==='faq') ?
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Чеки'}</Accordion.Header>
-      <Accordion.Body>{tromp[0]}</Accordion.Body>
+      <Accordion.Body style={{backgroundColor: '#F5DEB3'}}>{tromp[0]}</Accordion.Body>
 </Accordion.Item>
 <Accordion.Item eventKey='2'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Договоры'}</Accordion.Header>
-      <Accordion.Body>{tromp[1]}</Accordion.Body>
+      <Accordion.Body style={{backgroundColor: '#F5DEB3'}}>{tromp[1]}</Accordion.Body>
 </Accordion.Item>
 <Accordion.Item eventKey='3'>
       <Accordion.Header style={{textAlign:'justify'}}>{'Требования к деятельности'}</Accordion.Header>
-      <Accordion.Body>{tromp[2]}</Accordion.Body>
+      <Accordion.Body style={{backgroundColor: '#F5DEB3'}}>{tromp[2]}</Accordion.Body>
 </Accordion.Item>
 </Accordion>
 : null
