@@ -236,7 +236,7 @@ return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"strin
     <Container className="d-flex justify-content-center align-items-center"
     fluid>
         <div xs='auto' md='auto' lg='auto'>
-            <div xs='auto' md='auto' lg='auto' id="div1" style={{width:window.innerWidth-500,height:window.innerHeight,
+            <div id="div1" style={{width:window.innerWidth-500,height:window.innerHeight, minWidth:'50vh',
               border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
               {outMessage}
             </div>

@@ -14,7 +14,7 @@ const Main = () =>{
   }, [])
 
 const element = isLoaderVisible ? <Loader/> : <Fader src='https://cx15068.tmweb.ru/api/Image/Logo'/>
-  return ( <Grid style={{backgroundColor:'#38b6ff',height:window.innerHeight-1,width:window.innerWidth}} container direction={"column"} alignItems={"flex-start"} className="d-flex align-items-center">
+  return ( <Grid style={{backgroundColor:'#38b6ff',height:window.innerHeight-1}} container direction={"column"} alignItems={"flex-start"} className="d-flex align-items-center">
     {element}
     </Grid>
   );
