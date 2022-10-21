@@ -70,16 +70,14 @@ const FAQ =
 </Accordion>
 
 const element = isLoaderVisible ? <Loader/> :
-<div>
+<div className="d-flex flex-column justify-content-center align-items-center">
 <h2 style={{marginTop:20,marginBottom:20}}>Как стать самозанятым и как перестать им быть?</h2>
     <Container className="d-flex justify-content-center align-items-center"
     fluid>
-        <div xs='auto' md='auto' lg='auto'>
-            <div id="div1" style={{width:'140vh',
+        <Container className="justify-content-center align-items-center" id="div1" style={{width:'140vh',minWidth:'40vh',
               overflowY:'auto', overflowX:'auto',borderRadius:10}}>
                 {FAQ}
-            </div>
-        </div>
+        </Container>
     </Container>
     {button}
 </div>

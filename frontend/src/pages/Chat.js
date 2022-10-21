@@ -188,7 +188,7 @@ const popover = (message)=>(
 );
 
 //Вывод сообщений
-const outMessage = isLoaderVisible ? <Loader/> : messages.map((message,index)=>{ 
+const outMessage = messages.map((message,index)=>{ 
 const cnopcka = ((message.type ==='bot')&&(message.SecondText!=='')) 
 ? <OverlayTrigger trigger="click" placement="right" overlay={popover(message)}>
   <Button key={index} style={{borderRadius:10,border:'1px solid #a09eff'}} className="d-flex align-items-center" size="sm">
@@ -211,7 +211,7 @@ const FAQ = (message.mode==='faq') ?
 </Accordion>
 : null
 const mess= ((message.typeMess==='last')||(message.typeMess==='final') || (message.type !=='bot')) ?
-<div style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
+<div className="d-flex" style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
 width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',
 backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', borderRadius:10}}>
     <div style={{marginLeft:8,marginRight:8,marginTop:2,marginBottom:2}}>{getFormatedText(message.text,message)}</div>
@@ -219,12 +219,12 @@ backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', border
 :
 <Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? FAQ_REG_ROUTE :
 (message.mode===-3 ? FAQ_RESP_ROUTE : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
-style={{ marginLeft: 5, borderRadius:10,width:'fit-content',maxWidth:'60vh', 
+style={{ marginLeft: 5, borderRadius:10, width:'fit-content',maxWidth:'60vh', 
 border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',}}>
     {getFormatedText(message.text,message)}
 </Button>
 
-return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
+return <Grid style={{marginTop:10,marginBottom:5}}  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
             {mess}
             <div style={{marginLeft:5}} className="d-flex align-items-center">
               {cnopcka}
@@ -232,15 +232,17 @@ return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"strin
             </div>
         </Grid>
 })//Сама страница
+
+const element = isLoaderVisible ? <Loader/> 
+:
+<div className="d-flex flex-column" id="div1" style={{width:'150vh',minWidth:'40vh',height:window.innerHeight,
+border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
+    {outMessage}
+</div>
+
   return (
-    <Container className="d-flex justify-content-center align-items-center"
-    fluid>
-        <div xs='auto' md='auto' lg='auto'>
-            <div id="div1" style={{width:window.innerWidth-500,height:window.innerHeight, minWidth:'50vh',
-              border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
-              {outMessage}
-            </div>
-        </div>
+    <Container className="d-flex justify-content-center align-items-center">
+            {element}
     </Container> 
   );
 };

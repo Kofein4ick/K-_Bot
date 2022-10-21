@@ -23,8 +23,8 @@ const Fader = ({ time, src }) => {
     }, [fadeProp])
 
     return (
-       <Grid container direction={"column"} alignItems={"flex-start"} className="d-flex align-items-center">
-            <Image style={{width:'80vh',height:'80vh'}} className={fadeProp.fade} src={src}></Image>
+       <Grid container style={{marginBottom:200}} className="d-flex flex-column align-items-center">
+            <Image style={{width:'70vh',height:'70vh'}} className={fadeProp.fade} src={src}></Image>
             <Link to={CHAT_ROUTE}>
             <button style={{ width:'30vh',fontSize:'120%' ,backgroundColor:'RoyalBlue'
             ,borderColor:'RoyalBlue',color:'white',borderRadius:10}} className={fadeProp.fade}>Начать</button>
