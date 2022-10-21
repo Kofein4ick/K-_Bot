@@ -1,19 +1,20 @@
-import React, { useEffect, useState, useContext} from 'react';
-import {Button,Container,Accordion,AccordionContext } from 'react-bootstrap';
+import React, { useEffect, useState} from 'react';
+import {Button,Container,Accordion} from 'react-bootstrap';
 import {fetchFAQ_Priv_Q_A} from '../components/Api';
 import 'react-toastify/dist/ReactToastify.css';
 import { CHAT_ROUTE } from '../utils/consts';
+import Loader from '../components/Loader';
 
 const FAQ_Priv = () =>{
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
-const [visibleB,setVisibleB]=useState(false)
-
+const [isLoaderVisible, setIsLoaderVisible] = useState(false)
 
 document.body.style = 'background: #8ad4ff'
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
   if(flag===false)
     {
+      setIsLoaderVisible(true)
       let FAQ1=[]
       fetchFAQ_Priv_Q_A().then(data=>{
         FAQ1.push(faq(data,1))
@@ -22,15 +23,15 @@ useEffect(()=>{//При загрузке странице делаем один 
         FAQ1.push(faq(data,4))
         FAQ1.push(faq(data,5))
         setTromp(FAQ1)
+        setIsLoaderVisible(false)
       })
       setFlag(true)
-      setVisibleB(true)
     }
-  })
+  },[])
 
 
 function faq(data,id){
-let el = data.post.q_a.map((element,index)=>{index%2 ? setVisibleB(true) : setVisibleB(false)
+let el = data.post.q_a.map((element,index)=>{
   if(element.T_id===id) 
     return <Accordion.Item key={`${element.T_id*element.id*10}`} eventKey={`${element.T_id*element.id*10}`}>
        <Accordion.Header style={{textAlign:'justify'}}>{element.Qtext}</Accordion.Header>
@@ -91,21 +92,24 @@ const FAQ =
       <Accordion.Body style={{ backgroundColor: '#F5DEB3' }}>{tromp[4]}</Accordion.Body>
 </Accordion.Item>
 </Accordion>
-const load= visibleB ? <div></div> : <p></p>
+
+const element = isLoaderVisible ? <Loader/> :
+<div> <h2 style={{marginTop:20,marginBottom:20}}>Социальные гарантии, льготы, пенсии.</h2>
+<Container className="d-flex justify-content-center align-items-center"
+fluid>
+    <div xs='auto' md='auto' lg='auto'>
+        <div id="div1" style={{width:'140vh',
+          overflowY:'auto', overflowX:'auto',borderRadius:10}}>
+            {FAQ}
+        </div>
+    </div>
+</Container>
+{button}
+</div>
+
 //Сама страница
   return (<div style={{textAlign:'center'}} >
-    <h2 style={{marginTop:20,marginBottom:20}}>Социальные гарантии, льготы, пенсии.</h2>
-    <Container className="d-flex justify-content-center align-items-center"
-    fluid>
-        <div xs='auto' md='auto' lg='auto'>
-            <div id="div1" style={{width:'140vh',
-              border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto',borderRadius:10}}>
-                {FAQ}
-            </div>
-        </div>
-    </Container>
-    {button}
-    {load}
+      {element}
     </div>
   );
 };

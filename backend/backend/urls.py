@@ -31,5 +31,5 @@ urlpatterns = [
     path('api/Docs/Production',ProducionDocsApi.as_view()),
     path('api/Docs/ProductionDop',ProducionDopDocsApi.as_view()),
     path('api/Image/Logo',ImageApi.as_view()),
-    re_path(r'^',ReactAppView.as_view()),
+   	#re_path(r'^',ReactAppView.as_view()),
 ]

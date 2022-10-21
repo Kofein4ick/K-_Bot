@@ -4,17 +4,20 @@ import { fetchAnswer, fetchFAQ_Q_A, fetchItems} from '../components/Api';
 import { Grid} from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 import { first_message,docs_type,themes,test_first_message, docs_first, FAQ_PRIV_ROUTE,FAQ_RESP_ROUTE,FAQ_REG_ROUTE } from '../utils/consts';
+import Loader from '../components/Loader';
 
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
+const [isLoaderVisible, setIsLoaderVisible] = useState(false)
 
 document.body.style = 'background: #8ad4ff'
 
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
   if(flag===false)
     {
+      setIsLoaderVisible(true)
       let FAQ1=[]
       fetchFAQ_Q_A(1).then(data=>{
         FAQ1.push(faq(data))
@@ -24,6 +27,7 @@ useEffect(()=>{//При загрузке странице делаем один 
             FAQ1.push(faq(data))
             })
           })
+        setIsLoaderVisible(false)
         })
 
         setTromp(FAQ1)
@@ -184,7 +188,7 @@ const popover = (message)=>(
 );
 
 //Вывод сообщений
-const outMessage =  messages.map((message,index)=>{ 
+const outMessage = isLoaderVisible ? <Loader/> : messages.map((message,index)=>{ 
 const cnopcka = ((message.type ==='bot')&&(message.SecondText!=='')) 
 ? <OverlayTrigger trigger="click" placement="right" overlay={popover(message)}>
   <Button key={index} style={{borderRadius:10,border:'1px solid #a09eff'}} className="d-flex align-items-center" size="sm">
@@ -232,7 +236,7 @@ return <Grid style={{marginTop:10,marginBottom:10}}  container direction={"strin
     <Container className="d-flex justify-content-center align-items-center"
     fluid>
         <div xs='auto' md='auto' lg='auto'>
-            <div id="div1" style={{width:'140vh',height:window.innerHeight,
+            <div xs='auto' md='auto' lg='auto' id="div1" style={{width:window.innerWidth-500,height:window.innerHeight,
               border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
               {outMessage}
             </div>

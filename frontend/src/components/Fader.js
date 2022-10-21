@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Image,Row} from 'react-bootstrap';
+import {Image} from 'react-bootstrap';
 import { CHAT_ROUTE} from '../utils/consts';
 import PropTypes from 'prop-types'
 import '../App.css'
@@ -23,7 +23,7 @@ const Fader = ({ time, src }) => {
     }, [fadeProp])
 
     return (
-       <Grid style={{backgroundColor:'#38b6ff',height:window.innerHeight}} container direction={"column"} alignItems={"flex-start"} className="d-flex align-items-center">
+       <Grid container direction={"column"} alignItems={"flex-start"} className="d-flex align-items-center">
             <Image style={{width:'80vh',height:'80vh'}} className={fadeProp.fade} src={src}></Image>
             <Link to={CHAT_ROUTE}>
             <button style={{ width:'30vh',fontSize:'120%' ,backgroundColor:'RoyalBlue'
