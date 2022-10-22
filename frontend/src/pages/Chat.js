@@ -5,12 +5,14 @@ import { Grid} from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
 import { first_message,docs_type,themes,test_first_message, docs_first, FAQ_PRIV_ROUTE,FAQ_RESP_ROUTE,FAQ_REG_ROUTE } from '../utils/consts';
 import Loader from '../components/Loader';
+import Error_page from './Error_page';
 
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
 const [isLoaderVisible, setIsLoaderVisible] = useState(false)
+const [error,setError]=useState(false)
 
 document.body.style = 'background: #8ad4ff'
 
@@ -25,9 +27,33 @@ useEffect(()=>{//При загрузке странице делаем один 
           FAQ1.push(faq(data))
           fetchFAQ_Q_A(3).then(data=>{
             FAQ1.push(faq(data))
+            }).catch(err => { 
+              if (err.response) {
+                setError(500)
+              } else if (err.request) {
+                setError(400) 
+              } else { 
+                setError(900) 
+              } 
             })
+          }).catch(err => { 
+            if (err.response) {
+              setError(500)
+            } else if (err.request) {
+              setError(400) 
+            } else { 
+              setError(900) 
+            } 
           })
         setIsLoaderVisible(false)
+        }).catch(err => { 
+          if (err.response) {
+            setError(500)
+          } else if (err.request) {
+            setError(400) 
+          } else { 
+            setError(900) 
+          } 
         })
 
         setTromp(FAQ1)
@@ -50,6 +76,7 @@ let el = data.post.q_a.map((element,index)=>{
    })
   return el 
 }
+
 function fetchs(q_id, message){
 if(q_id!==null){
     switch(message.mode){
@@ -101,7 +128,7 @@ const getHyperLink = (text) => {
     if(i%2!==0){str=str.split('SOURCE')
     links=str[1]
     str[1]=''
-      return <a href={links} key={`p_${i}`}>{str}</a>}
+      return <a href={links} key={`p_${i}`} target='_blank' rel="noreferrer">{str}</a>}
     else{return str}})
   }
   else {
@@ -135,6 +162,7 @@ function printMess(data,message,q_id){
 }
 
   if((message.mode===-1)&&(q_id===1)){temp2.push(test_first_message)}
+
   temp3=temp2
 }
 
@@ -179,6 +207,7 @@ if((message.mode===-5)&&(q_id===-1)){
   setMessage([...messages,...temp3])
 }
 
+
 const popover = (message)=>(
   <Popover style={{maxWidth:'60vh'}}>
     <Popover.Body style={{textAlign:'justify'}}>
@@ -194,6 +223,7 @@ const cnopcka = ((message.type ==='bot')&&(message.SecondText!==''))
   <Button key={index} style={{borderRadius:10,border:'1px solid #a09eff'}} className="d-flex align-items-center" size="sm">
     i</Button> 
 </OverlayTrigger>: null
+
 const FAQ = (message.mode==='faq') ?
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
@@ -220,28 +250,34 @@ backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', border
 <Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? FAQ_REG_ROUTE :
 (message.mode===-3 ? FAQ_RESP_ROUTE : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
 style={{ marginLeft: 5, borderRadius:10, width:'fit-content',maxWidth:'60vh', 
-border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',}}>
+border: '1px solid #a09eff',textAlign:'justify'}}>
     {getFormatedText(message.text,message)}
 </Button>
 
-return <Grid style={{marginTop:10,marginBottom:5}}  container direction={"string"} alignItems={"flex-start"} className="d-flex align-items-center">
+return <Grid style={{marginTop:10,marginBottom:5}}  container className="d-flex align-items-center">
             {mess}
             <div style={{marginLeft:5}} className="d-flex align-items-center">
               {cnopcka}
               {FAQ}
             </div>
         </Grid>
-})//Сама страница
+})
 
-const element = isLoaderVisible ? <Loader/> 
-:
-<div className="d-flex flex-column" id="div1" style={{width:'150vh',minWidth:'40vh',height:window.innerHeight,
+//Сама страница
+
+const element = error ? Error_page(error) : (isLoaderVisible ? <Loader/> 
+:<div className="d-flex flex-column">
+<div className="d-flex flex-column" id="div1" style={{width:'150vh',minWidth:'40vh',height:window.innerHeight-20,
 border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
     {outMessage}
-</div>
+</div>            
+  <div className="d-flex align-items-center" style={{fontSize:'70%',color:'grey'}}>
+Все материалы сайта представлены для ознакомления, анализа и обсуждения. Помните, что мы не несём ответственность
+ за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</div>
+</div>)
 
   return (
-    <Container className="d-flex justify-content-center align-items-center">
+    <Container style={{height:window.innerHeight-1}} className="d-flex flex-column justify-content-center align-items-center">
             {element}
     </Container> 
   );

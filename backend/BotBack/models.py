@@ -16,7 +16,8 @@ class Answers(models.Model):
 
 #Сферы деятельностей
 class Types(models.Model):
-    text=models.TextField(blank=False)                          
+    text=models.TextField(blank=False)    
+                          
 #Пункты
 class Items(models.Model):
     text=models.TextField(blank=True)

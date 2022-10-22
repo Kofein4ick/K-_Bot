@@ -4,11 +4,13 @@ import {fetchFAQ_Priv_Q_A} from '../components/Api';
 import 'react-toastify/dist/ReactToastify.css';
 import { CHAT_ROUTE } from '../utils/consts';
 import Loader from '../components/Loader';
+import Error_page from './Error_page';
 
 const FAQ_Priv = () =>{
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
 const [tromp,setTromp]=useState([])
 const [isLoaderVisible, setIsLoaderVisible] = useState(false)
+const [error,setError]=useState(false)
 
 document.body.style = 'background: #8ad4ff'
 useEffect(()=>{//При загрузке странице делаем один раз запрос на получение первого вопроса и его ответов
@@ -24,6 +26,14 @@ useEffect(()=>{//При загрузке странице делаем один 
         FAQ1.push(faq(data,5))
         setTromp(FAQ1)
         setIsLoaderVisible(false)
+      }).catch(err => { 
+        if (err.response) {
+          setError(500)
+        } else if (err.request) {
+          setError(400) 
+        } else { 
+          setError(900) 
+        } 
       })
       setFlag(true)
     }
@@ -61,14 +71,14 @@ const getHyperLink = (text) => {
     if(i%2!==0){str=str.split('SOURCE')
     links=str[1]
     str[1]=''
-      return <a href={links} key={`p_${i}`}>{str}</a>}
+      return <a href={links} key={`p_${i}`} target='_blank' rel="noreferrer">{str}</a>}
     else{return str}})
   }
   else {
     return text
   }
 }
-const button = <Button style={{marginTop:20}} href={CHAT_ROUTE}>Вернуться назад</Button>
+const button = <Button style={{marginTop:10,marginBottom:5}} href={CHAT_ROUTE}>Вернуться назад</Button>
 const FAQ =
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
@@ -93,7 +103,7 @@ const FAQ =
 </Accordion.Item>
 </Accordion>
 
-const element = isLoaderVisible ? <Loader/> :
+const element = error ? Error_page(error) : (isLoaderVisible ? <Loader/> :
 <div className="d-flex flex-column justify-content-center align-items-center">
 <h2 style={{marginTop:20,marginBottom:20}}>Социальные гарантии, льготы, пенсии</h2>
 <Container className="d-flex justify-content-center align-items-center"
@@ -104,10 +114,13 @@ fluid>
         </Container>
 </Container>
 {button}
-</div>
+<div className="d-flex align-items-center" style={{fontSize:'70%',color:'grey'}}>
+              Все материалы сайта представлены для ознакомления, анализа и обсуждения. Помните, что мы не несём ответственность
+               за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</div>
+</div>)
 
 //Сама страница
-  return (<div style={{textAlign:'center'}} >
+  return (<div className="d-flex flex-column align-items-center" >
       {element}
     </div>
   );

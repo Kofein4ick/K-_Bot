@@ -67,7 +67,7 @@ class ImageApi(APIView):
 class ReactAppView(View):
     def get(self, request):
         try:
-            with open(BASE_DIR/'build'/'index.html') as file:
+            with open(BASE_DIR/'build'/'index.html','rb') as file:
                 return HttpResponse(file.read())
 
         except :
