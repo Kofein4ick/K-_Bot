@@ -10,9 +10,9 @@ import Error_page from './Error_page';
 const Chat = () =>{
 const [messages,setMessage] = useState([]) //стейт, хранящий все сообщения
 const [flag,setFlag]=useState(false)//вспомогательный стейт для useEffect
-const [tromp,setTromp]=useState([])
-const [isLoaderVisible, setIsLoaderVisible] = useState(false)
-const [error,setError]=useState(false)
+const [tromp,setTromp]=useState([])//стейт, хранящий ответы выпадающего списка
+const [isLoaderVisible, setIsLoaderVisible] = useState(false)//стейт лоадера
+const [error,setError]=useState(false)//стейт ошибки
 
 document.body.style = 'background: #8ad4ff'
 
@@ -21,6 +21,7 @@ useEffect(()=>{//При загрузке странице делаем один 
     {
       setIsLoaderVisible(true)
       let FAQ1=[]
+      //Получение и заполнение выпадающего списка
       fetchFAQ_Q_A(1).then(data=>{
         FAQ1.push(faq(data))
         fetchFAQ_Q_A(2).then(data=>{
@@ -57,7 +58,7 @@ useEffect(()=>{//При загрузке странице делаем один 
         })
 
         setTromp(FAQ1)
-      fetchs(0,first_message)
+      fetchs(0,first_message)//Вывод приветсвенного сообщения
       setFlag(true)
     }
     const objDiv = document.getElementById("div1");//прокрутка скролла вниз, чтобы новые сообщения были видны всегда
@@ -80,18 +81,18 @@ let el = data.post.q_a.map((element,index)=>{
 function fetchs(q_id, message){
 if(q_id!==null){
     switch(message.mode){
-      case -1:
-      fetchAnswer(q_id).then(data=>{//получение вопроса и ответов
+      case -1://Тест
+      fetchAnswer(q_id).then(data=>{
         printMess(data,message,q_id)})//вывод
         break
-      case -2:
+      case -2://Переход на страницу регистрации
         break
-      case -3:
+      case -3://Переход на страницу ответственности
 
         break
-      case -4:
+      case -4://Переход на страницу привилений
         break
-      case -5:
+      case -5://Договора
         if(q_id<0){printMess(null,message,q_id)}
         else{
         fetchItems(q_id).then(data=>{
@@ -135,42 +136,45 @@ const getHyperLink = (text) => {
     return text
   }
 }
-
+//Занесение соощбений в стейт
 function printMess(data,message,q_id){
-  let temp3=[]
+  let temp3=[]//временный массив
   let next_mess
-  if(data!==null){//если есть массив ответов
+  if(data!==null){//если есть массив ответов, т.е. пришло от запроса
     let temp2 = []
-    if(message.mode===-1){
-    temp2=data.post.answers.map((answer,index)=>{  
+    if(message.mode===-1){//режим теста
+    temp2=data.post.answers.map((answer,index)=>{  //заносим ответы на вопрос
     let ans={type:'bot',text:answer.text,
     SecondText:answer.SecondText,Link:answer.Link, Next_Quest:answer.Next_Quest,FinalAnswer:answer.FinalAnswer,mode:message.mode}
     return ans
   })
   temp2=temp2.reverse()//переворачиваем массив ответов, чтобы вставить в начале вопрос
+  //заносим сам вопрос
   temp2.push({type:'bot',text:data.post.quest.text,typeMess:'final',
   SecondText:'',Link:'',Next_Quest:null,FinalAnswer:'',mode:message.mode})
-}else{
+  }
+  else{//если не тест
+  //Формируем сообщения для кнопки далее
   next_mess={type:'bot',text:'Далее',
   SecondText:'',Link:'',Next_Quest:data.post.items.Next_Quest,FinalAnswer:data.post.items.FinalAnswer,mode:message.mode}
 
-  if((message.mode===-5)&&(q_id!==-1)){temp2.push(next_mess)}
-
+  if((message.mode===-5)&&(q_id!==-1)){temp2.push(next_mess)}//если это режим договора
+  //Заносим сообщение
   temp2.push({type:'bot',text:data.post.items.text,
   SecondText:data.post.items.SecondText,typeMess:'final',
   Link:data.post.items.Link,Next_Quest:data.post.items.Next_Quest,FinalAnswer:data.post.items.FinalAnswer,mode:message.mode})
 }
 
-  if((message.mode===-1)&&(q_id===1)){temp2.push(test_first_message)}
+  if((message.mode===-1)&&(q_id===1)){temp2.push(test_first_message)}//Вывод приветственного сообщения теста
 
   temp3=temp2
 }
 
   if(q_id===0){let temp4=Object.assign([],themes)
     temp4.reverse()
-    temp3.push(...temp4)}//Вывод приветсвенного сообщения(лежит в константах)
+    temp3.push(...temp4)}//Вывод меню выбора режимов
 
-if((message.mode===-5)&&(q_id===-1)){
+if((message.mode===-5)&&(q_id===-1)){//Вывод меню выбора документов
     let temp4=Object.assign([],docs_type)
     temp4.reverse()
     temp3.push(...temp4)
@@ -183,31 +187,33 @@ if((message.mode===-5)&&(q_id===-1)){
       let temp4=Object.assign([],themes)
       temp4.reverse()
       temp3.push(...temp4)
+      //Промежуточное сообщение
       ans={type:'bot',typeMess:'final',text:'Может Вы хотите узнать что-нибудь еще?',
       SecondText:'',Link:message.Link,Next_Quest:null,FinalAnswer:'',mode:0}
       temp3.push(ans)}
 
-      if(message.mode===-5){
+      if(message.mode===-5){//Вывод выпадающего списка
       ans={type:'bot',typeMess:'final',text:'Возможно, Вас заинтересуют эти вопросы:',
       SecondText:'',Link:message.Link,Next_Quest:null,FinalAnswer:'',mode:'faq'}
       temp3.push(ans)
       }
 
-      if(message.FinalAnswer!=='END'){
+      if(message.FinalAnswer!=='END'){//Вывод финального ответа
       ans={type:'bot',typeMess:'last',text:message.FinalAnswer,
       SecondText:'',Link:message.Link,Next_Quest:null,FinalAnswer:'',mode:message.mode}
       temp3.push(ans)}
     }
+    //Для вывода пользовательских сообщений
     let ans={type:'',text:message.text,
     SecondText:'',Link:'',Next_Quest:null,FinalAnswer:'' ,mode:message.mode,typeMess:message.typeMess}
-    if(q_id===0){ans.type='bot'}
+    if(q_id===0){ans.type='bot'}//Для вывода константных сообщений
     temp3.push(ans)
   }
   temp3=temp3.reverse()
   setMessage([...messages,...temp3])
 }
 
-
+//Всплывающее окно
 const popover = (message)=>(
   <Popover style={{maxWidth:'60vh'}}>
     <Popover.Body style={{textAlign:'justify'}}>
@@ -218,12 +224,15 @@ const popover = (message)=>(
 
 //Вывод сообщений
 const outMessage = messages.map((message,index)=>{ 
+
+ //Кнопка примечаний 
 const cnopcka = ((message.type ==='bot')&&(message.SecondText!=='')) 
 ? <OverlayTrigger trigger="click" placement="right" overlay={popover(message)}>
   <Button key={index} style={{borderRadius:10,border:'1px solid #a09eff'}} className="d-flex align-items-center" size="sm">
     i</Button> 
 </OverlayTrigger>: null
 
+//Выпадающий список
 const FAQ = (message.mode==='faq') ?
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
@@ -240,13 +249,14 @@ const FAQ = (message.mode==='faq') ?
 </Accordion.Item>
 </Accordion>
 : null
+//Сообщения
 const mess= ((message.typeMess==='last')||(message.typeMess==='final') || (message.type !=='bot')) ?
 <div className="d-flex" style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
 width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',
 backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', borderRadius:10}}>
     <div style={{marginLeft:8,marginRight:8,marginTop:2,marginBottom:2}}>{getFormatedText(message.text,message)}</div>
 </div>
-:
+://Кнопки управления
 <Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? FAQ_REG_ROUTE :
 (message.mode===-3 ? FAQ_RESP_ROUTE : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
 style={{ marginLeft: 5, borderRadius:10, width:'fit-content',maxWidth:'60vh', 
@@ -264,7 +274,6 @@ return <Grid style={{marginTop:10,marginBottom:5}}  container className="d-flex 
 })
 
 //Сама страница
-
 const element = error ? Error_page(error) : (isLoaderVisible ? <Loader/> 
 :<div className="d-flex flex-column">
 <div className="d-flex flex-column" id="div1" style={{width:'150vh',minWidth:'40vh',height:window.innerHeight-20,
