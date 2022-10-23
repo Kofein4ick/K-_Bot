@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Button,Container,Popover,OverlayTrigger,Accordion } from 'react-bootstrap';
+import {Button,Container,Popover,OverlayTrigger,Accordion} from 'react-bootstrap';
 import { fetchAnswer, fetchFAQ_Q_A, fetchItems} from '../components/Api';
 import { Grid} from '@mui/material';
 import 'react-toastify/dist/ReactToastify.css';
@@ -251,7 +251,7 @@ const FAQ = (message.mode==='faq') ?
 : null
 //Сообщения
 const mess= ((message.typeMess==='last')||(message.typeMess==='final') || (message.type !=='bot')) ?
-<div className="d-flex" style={{ marginLeft:message.type ==='bot' ? 5 : 'auto' ,
+<div className="d-flex" style={{ marginLeft:message.type ==='bot' ? 0 : 'auto' ,
 width:'fit-content',maxWidth:'60vh', border: message.type ==='bot' ? '1px solid #a09eff' : '1px solid #ffabab',textAlign:'justify',
 backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', borderRadius:10}}>
     <div style={{marginLeft:8,marginRight:8,marginTop:2,marginBottom:2}}>{getFormatedText(message.text,message)}</div>
@@ -259,7 +259,7 @@ backgroundColor:message.typeMess==='last' ? 'pink' :'#fff', color:'#000', border
 ://Кнопки управления
 <Button size="sm" onClick={()=>{fetchs(message.Next_Quest,message)}} href= {message.mode===-2 ? FAQ_REG_ROUTE :
 (message.mode===-3 ? FAQ_RESP_ROUTE : (message.mode===-4 ? FAQ_PRIV_ROUTE : null))}
-style={{ marginLeft: 5, borderRadius:10, width:'fit-content',maxWidth:'60vh', 
+style={{ marginLeft: 0, borderRadius:10, width:'fit-content',maxWidth:'60vh', 
 border: '1px solid #a09eff',textAlign:'justify'}}>
     {getFormatedText(message.text,message)}
 </Button>
@@ -275,18 +275,20 @@ return <Grid style={{marginTop:10,marginBottom:5}}  container className="d-flex 
 
 //Сама страница
 const element = error ? Error_page(error) : (isLoaderVisible ? <Loader/> 
-:<div className="d-flex flex-column">
-<div className="d-flex flex-column" id="div1" style={{width:'150vh',minWidth:'40vh',height:window.innerHeight-20,
-border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto'}}>
+:
+<Container  className="d-flex flex-column align-items-center">
+  <Container  className="d-flex flex-column" id="div1" style={{maxWidth:'160vh',minWidth:'40vh',
+   height:window.innerHeight-20,border:'1px solid #3ab2d6', overflowY:'auto', overflowX:'auto' ,borderRadius:10}}>
     {outMessage}
-</div>            
-  <div className="d-flex align-items-center" style={{fontSize:'70%',color:'grey'}}>
-Все материалы сайта представлены для ознакомления, анализа и обсуждения. Помните, что мы не несём ответственность
- за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</div>
-</div>)
+  </Container>
+  <h3  className="d-flex" style={{fontSize:'70%',color:'grey',marginBottom:20,textAlign:'justify'}} >
+              Все материалы сайта представлены для ознакомления, анализа и обсуждения. Помните, что мы не несём ответственность
+               за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</h3>
+</Container>           
+)
 
   return (
-    <Container style={{height:window.innerHeight-1}} className="d-flex flex-column justify-content-center align-items-center">
+    <Container className="d-flex justify-content-center align-items-center">
             {element}
     </Container> 
   );

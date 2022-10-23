@@ -78,7 +78,7 @@ const getHyperLink = (text) => {
     return text
   }
 }
-const button = <Button style={{marginTop:10,marginBottom:5}} href={CHAT_ROUTE}>Вернуться назад</Button>
+const button = <Button size='sm'  style={{marginTop:10,marginBottom:5}} href={CHAT_ROUTE}>Вернуться назад</Button>
 const FAQ =
 <Accordion alwaysOpen>
 <Accordion.Item eventKey='1'>
@@ -104,25 +104,25 @@ const FAQ =
 </Accordion>
 
 const element = error ? Error_page(error) : (isLoaderVisible ? <Loader/> :
-<div className="d-flex flex-column justify-content-center align-items-center">
-<h2 style={{marginTop:20,marginBottom:20}}>Социальные гарантии, льготы, пенсии</h2>
+<Container className="d-flex flex-column justify-content-center align-items-center">
+<h2 style={{marginTop:20,marginBottom:20,textAlign:'center'}}>Социальные гарантии, льготы, пенсии</h2>
 <Container className="d-flex justify-content-center align-items-center"
 fluid>
-        <Container className="justify-content-center align-items-center" id="div1" style={{width:'140vh',minWidth:'40vh',
-          overflowY:'auto', overflowX:'auto',borderRadius:10}}>
+<Container  className="d-flex flex-column" style={{maxWidth:'160vh',minWidth:'40vh',
+  maxHeight:window.innerHeight-10, overflowY:'auto', overflowX:'auto' ,borderRadius:10}}>
             {FAQ}
         </Container>
 </Container>
 {button}
-<div className="d-flex align-items-center" style={{fontSize:'70%',color:'grey'}}>
+<h3 className="d-flex align-items-center" style={{fontSize:'70%',color:'grey',textAlign:'justify'}}>
               Все материалы сайта представлены для ознакомления, анализа и обсуждения. Помните, что мы не несём ответственность
-               за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</div>
-</div>)
+               за размещаемые материалы, взятые из открытых источников, а также за возможный ущерб.</h3>
+</Container>)
 
 //Сама страница
-  return (<div className="d-flex flex-column align-items-center" >
+  return (<Container className="d-flex flex-column align-items-center" >
       {element}
-    </div>
+    </Container>
   );
 };
 
